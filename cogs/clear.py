@@ -15,5 +15,6 @@ class clear(commands.Cog):
         message = await interaction.followup.send(embed=embed)
         await asyncio.sleep(2)
         await message.delete()
+
 async def setup(bot):
     await bot.add_cog(clear(bot))
