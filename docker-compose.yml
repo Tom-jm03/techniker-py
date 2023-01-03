@@ -1,0 +1,9 @@
+version: '2.14.1'
+
+services:
+  techniker-py:
+    build: .
+    image: tom/techniker-py
+    restart: unless-stopped
+    volumes:
+      - ./techniker.db:/app/techniker.db
