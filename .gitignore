@@ -1,0 +1,10 @@
+*.env
+env
+techniker
+__pycache__
+*.__pycache__
+*.cogs__pycache__
+*.db
+*.txt
+*.mp3
+*.log
