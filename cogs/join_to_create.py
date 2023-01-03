@@ -28,8 +28,8 @@ class join_to_create(commands.Cog):
             result = await c.fetchone()
             if result != None:
                 view = Confirm()
-                embed = discord.Embed(title=f"Are you sure you want to delete this join to create channel?", description=f"Channel: {channel.mention}", color=0xff0000)
-                await interaction.followup.send(embed=embed, view=view)
+                embed = discord.Embed(title=f"Are you sure you want to delete this join to create channel? This also includes already created user-channels.", description=f"Channel: {channel.mention}", color=0xff0000)
+                await interaction.followup.send(embed=embed, view=view) 
                 await view.wait()
                 if view.value:
                     await channel.delete()
