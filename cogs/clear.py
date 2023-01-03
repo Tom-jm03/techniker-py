@@ -1,9 +1,6 @@
 import discord, asyncio
-from discord import app_commands, Permissions
+from discord import app_commands
 from discord.ext import commands
-
-
-
 
 class clear(commands.Cog):
     def __init__(self, bot):
