@@ -3,7 +3,7 @@ from typing import Literal, Optional
 from dotenv import load_dotenv
 from datetime import timedelta
 from discord.ext import commands
-from functions import load_extension, create_tables
+from src.functions import load_extension, create_tables
 load_dotenv()
 
 global error_file
