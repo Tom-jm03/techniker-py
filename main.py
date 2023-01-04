@@ -27,6 +27,18 @@ async def on_ready():
     print("Bot is ready ✅")
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="&help"))
 
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        embed = discord.Embed(title="Error", description="That command does not exist.", color=0xff0000)
+        await ctx.send(embed=embed)
+    elif isinstance(error, commands.MissingPermissions):
+        embed = discord.Embed(title="Error", description="You do not have the permissions to use this command.", color=0xff0000)
+        await ctx.send(embed=embed)
+    elif isinstance(error, commands.MissingRequiredArgument):
+        embed = discord.Embed(title="Error", description="You are missing a required argument.", color=0xff0000)
+        await ctx.send(embed=embed)
 @bot.command()
 @commands.is_owner()
 @commands.guild_only()

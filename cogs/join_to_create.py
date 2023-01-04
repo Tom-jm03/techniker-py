@@ -43,7 +43,7 @@ class join_to_create(commands.Cog):
                     await db.commit()
                     await c.close()
             else:
-                embed = discord.Embed(title=f"Error.", description="This channel is not a join to create channel.❌", color=0xff0000)
+                embed = discord.Embed(title=f"Error.", description="This channel is not a join-to-create channel.❌", color=0xff0000)
                 await interaction.followup.send(embed=embed)
 
     @commands.Cog.listener()
