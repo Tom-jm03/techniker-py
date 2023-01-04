@@ -21,12 +21,10 @@ intents.voice_states = True
 intents.guilds = True
 bot.synced = False
 
-
 @bot.event
 async def on_ready():
     print("Bot is ready ✅")
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="&help"))
-
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -39,6 +37,7 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.MissingRequiredArgument):
         embed = discord.Embed(title="Error", description="You are missing a required argument.", color=0xff0000)
         await ctx.send(embed=embed)
+
 @bot.command()
 @commands.is_owner()
 @commands.guild_only()
@@ -86,7 +85,7 @@ async def main():
         await create_tables()
         await load_extension(bot)
         await bot.start(discord_token)
-    except Exception as e:
+    except:
         tb = traceback.format_exc()
         now = datetime.datetime.now()
         print(f"Something went wrong while starting the bot ❌\n{tb}")

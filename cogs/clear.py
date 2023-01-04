@@ -5,7 +5,7 @@ from discord.ext import commands
 class clear(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+ 
     @app_commands.default_permissions(manage_messages=True)
     @app_commands.command(name="clear", description="Clears messages in a channel")
     async def clear(self, interaction, amount: int = 1):
