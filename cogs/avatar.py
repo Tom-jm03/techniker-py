@@ -9,8 +9,7 @@ class avatar(commands.Cog):
     async def avatar(self, interaction: discord.Interaction, user: discord.Member = None):
         await interaction.response.defer()
         if user is None:
-            user = interaction.user.id
-            user = self.bot.get_user(user)
+            user = self.bot.get_user(interaction.user.id)
         embed = discord.Embed(title=f"{user.name}'s avatar", color=0x00ff00)
         embed.set_image(url=user.avatar)
         embed.timestamp = interaction.created_at

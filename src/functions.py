@@ -1,4 +1,4 @@
-import aiosqlite, os
+import aiosqlite, os, asyncio
 
 async def load_extension(bot):
     for filename in os.listdir('cogs'):
