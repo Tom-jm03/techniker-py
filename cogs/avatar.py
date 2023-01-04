@@ -13,6 +13,7 @@ class avatar(commands.Cog):
             user = self.bot.get_user(user)
         embed = discord.Embed(title=f"{user.name}'s avatar", color=0x00ff00)
         embed.set_image(url=user.avatar)
+        embed.timestamp = interaction.created_at
         await interaction.followup.send(embed=embed)
 
 async def setup(bot):
