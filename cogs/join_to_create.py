@@ -17,7 +17,7 @@ class join_to_create(commands.Cog):
             channel = await guild.create_voice_channel(channel_name, user_limit=channel_size, bitrate=(channel_bits*1000))
             await db.execute("INSERT INTO join_to_create VALUES (?, ?, ?, ?, ?, ?, ?)", (interaction.guild.id, channel.id, channel_size, interaction.user.id, channel_bits, datetime.datetime.now(), interaction.user.id))
             await db.commit()
-        await interaction.followup.send(f"Created a join to create channel for {channel_name} ✅")
+            await interaction.followup.send(f"Created a join to create channel for {channel_name} ✅")
 
     @group.command(name="delete", description="Delete a join to create channel")
     async def delete(self, interaction: discord.Interaction, channel: discord.VoiceChannel):
@@ -33,7 +33,7 @@ class join_to_create(commands.Cog):
                 await view.wait()
                 if view.value:
                     await channel.delete()
-                    await c.execute("SELECT join_to_create_channel_id FROM join_to_create_users WHERE channel_id = ?", (channel.id, ))
+                    await c.execute("SELECT created_user_channel_id FROM join_to_create_users WHERE channel_id = ?", (channel.id, ))
                     await db.execute("DELETE FROM join_to_create WHERE channel_id = ?", (channel.id,))
                     result2 = await c.fetchall()
                     if result2 != None:
@@ -57,7 +57,7 @@ class join_to_create(commands.Cog):
                     return
                 if result1 != None:
                     category = after.channel.category
-                    await c.execute("SELECT join_to_create_channel_id FROM join_to_create_users WHERE user_id = ? AND guild_id = ? AND channel_id = ?", (member.id, member.guild.id, result1[1], ))
+                    await c.execute("SELECT created_user_channel_id FROM join_to_create_users WHERE user_id = ? AND guild_id = ? AND channel_id = ?", (member.id, member.guild.id, result1[1], ))
                     result2 = await c.fetchone()
                     if result2 == None:
                         new_channel = await member.guild.create_voice_channel(name=f"{member.nick}'s Channel", user_limit=result1[2], bitrate=(result1[4]*1000), category=category)
@@ -69,7 +69,7 @@ class join_to_create(commands.Cog):
                         if new_channel.members == []:
                             await new_channel.delete()
                     if result2 != None:
-                        await c.execute("SELECT join_to_create_channel_id FROM join_to_create_users WHERE user_id = ? AND guild_id = ? AND channel_id = ?", (member.id, member.guild.id, result1[1], ))
+                        await c.execute("SELECT created_user_channel_id FROM join_to_create_users WHERE user_id = ? AND guild_id = ? AND channel_id = ?", (member.id, member.guild.id, result1[1], ))
                         result2 = await c.fetchone()
                         channel = self.bot.get_channel(result2[0])
                         await member.move_to(channel)
@@ -80,13 +80,12 @@ class join_to_create(commands.Cog):
         if before.channel != after.channel and before.channel is not None:
             async with aiosqlite.connect("techniker.db") as db:
                 c = await db.cursor()
-                await c.execute("SELECT * FROM join_to_create_users WHERE join_to_create_channel_id = ?", (before.channel.id, ))
+                await c.execute("SELECT * FROM join_to_create_users WHERE created_user_channel_id = ?", (before.channel.id, ))
                 result = await c.fetchone()
                 if result != None:
                     if after.channel == None and before.channel.id == result[3] and before.channel.id != result[2]:
                         if before.channel.members == []:
                             await before.channel.delete()
-                        await before.channel.delete()
                     elif before.channel.id == result[3] and before.channel.id != result[2] and after.channel.id != result[2]:
                         if before.channel.members == []:
                             await before.channel.delete()
@@ -95,7 +94,7 @@ class join_to_create(commands.Cog):
     async def on_guild_channel_delete(self, channel):
         async with aiosqlite.connect("techniker.db") as db:
             await db.execute("DELETE FROM join_to_create WHERE channel_id = ?", (channel.id,))
-            await db.execute("DELETE FROM join_to_create_users WHERE join_to_create_channel_id = ?", (channel.id,))
+            await db.execute("DELETE FROM join_to_create_users WHERE created_user_channel_id = ?", (channel.id,))
             await db.commit()
 
 async def setup(bot):
