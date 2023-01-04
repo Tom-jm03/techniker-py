@@ -25,6 +25,7 @@ bot.synced = False
 @bot.event
 async def on_ready():
     print("Bot is ready ✅")
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="&help"))
 
 @bot.command()
 @commands.is_owner()
